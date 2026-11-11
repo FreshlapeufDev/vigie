@@ -12,7 +12,7 @@ export function makeCert(days = 3650, cn = 'localhost') {
       'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-sha256',
       '-keyout', join(dir, 'key.pem'), '-out', join(dir, 'cert.pem'),
       '-days', String(days), '-subj', `/CN=${cn}`,
-      '-addext', `subjectAltName=DNS:${cn},IP:127.0.0.1`,
+      '-addext', `subjectAltName=DNS:${cn},IP:127.0.0.1,IP:0:0:0:0:0:0:0:1`,
     ], { stdio: 'ignore' });
     return { key: readFileSync(join(dir, 'key.pem'), 'utf8'), cert: readFileSync(join(dir, 'cert.pem'), 'utf8') };
   } finally {
@@ -29,7 +29,7 @@ export const hasOpenssl = (() => {
   }
 })();
 
-const listen = (server) => new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve(server.address().port)));
+const listen = (server) => new Promise((resolve) => server.listen(0, () => resolve(server.address().port)));
 
 const VULNERABLE_HTML = `<!doctype html>
 <html><head>
