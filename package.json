@@ -1,0 +1,45 @@
+{
+  "name": "vigie",
+  "version": "1.0.0",
+  "description": "Website security checker by FreshDev: HTTPS, certificates, security headers, cookies, exposed files and vulnerable libraries, with a bilingual HTML audit report. Zero dependencies.",
+  "type": "module",
+  "bin": {
+    "vigie": "bin/vigie.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "README.fr.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/unit.test.js test/scan.test.js test/cli.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "security",
+    "website",
+    "scanner",
+    "https",
+    "tls",
+    "headers",
+    "csp",
+    "hsts",
+    "audit",
+    "cli"
+  ],
+  "author": "FreshDev (Fresh&Dev)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreshlapeufDev/vigie.git"
+  },
+  "homepage": "https://github.com/FreshlapeufDev/vigie#readme",
+  "bugs": {
+    "url": "https://github.com/FreshlapeufDev/vigie/issues"
+  }
+}
