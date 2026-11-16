@@ -1,5 +1,5 @@
 {
-  "name": "vigie",
+  "name": "vigie-cli",
   "version": "1.0.0",
   "description": "Website security checker by FreshDev: HTTPS, certificates, security headers, cookies, exposed files and vulnerable libraries, with a bilingual HTML audit report. Zero dependencies.",
   "type": "module",
