@@ -11,6 +11,10 @@
 
 HTTPS · certificats · en-têtes de sécurité · cookies · fichiers exposés · bibliothèques vulnérables
 
+<a href="https://github.com/FreshlapeufDev/vigie/releases/latest/download/vigie.exe"><img src="https://img.shields.io/badge/T%C3%A9l%C3%A9charger-vigie.exe-f2b134?style=for-the-badge&logo=windows&logoColor=white&labelColor=15171c" alt="Télécharger vigie.exe" height="44"></a>
+
+<sub>Windows 10 et 11 · aucune installation · double-cliquez et c'est parti</sub>
+
 [English](https://github.com/FreshlapeufDev/vigie/blob/main/README.md) · **Français**
 
 <img src="https://raw.githubusercontent.com/FreshlapeufDev/vigie/main/docs/console.png" alt="Sortie console de vigie" width="760">
