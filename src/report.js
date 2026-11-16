@@ -73,7 +73,7 @@ export function printTarget(result, { lang, quiet, probe }) {
     }
   }
 
-  const counts = ORDER.filter((severity) => result.counts[severity]).map((severity) => TONES[severity](`${result.counts[severity]} ${d.severities[severity]}`));
+  const counts = ORDER.filter((severity) => result.counts[severity]).map((severity) => TONES[severity](d.severityCounts(result.counts[severity], severity)));
   const letter = result.grade;
   console.log(`  ${GRADE_TONE[letter](c.bold(`[ ${letter.padEnd(2)} ]`))}  ${gauge(result.score)}  ${c.bold(String(result.score))}${c.gray('/100')}`);
   console.log(`          ${d.verdicts[letter]}`);

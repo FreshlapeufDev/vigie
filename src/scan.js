@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { CATEGORIES, RULES, SEVERITIES, score, severityRank } from './catalog.js';
 import { Client, normalizeTarget } from './net.js';
 import { transportChecks } from './checks/transport.js';
@@ -6,7 +5,9 @@ import { cookieChecks, headerChecks } from './checks/headers.js';
 import { exposureChecks } from './checks/exposure.js';
 import { contentChecks, disclosureChecks } from './checks/content.js';
 
-export const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+import { VERSION } from './version.js';
+
+export const pkg = { version: VERSION };
 
 const SHOWN_HEADERS = [
   'server', 'content-type', 'strict-transport-security', 'content-security-policy', 'x-frame-options', 'x-content-type-options',
@@ -45,6 +46,8 @@ export async function scanTarget(input, options = {}) {
   const secureUrl = variant(target, 'https:', String(securePort));
   const plainUrl = plainPort === null ? null : variant(target, 'http:', String(plainPort));
 
+  const step = (name) => options.onStep?.(name);
+  step('connect');
   const https = await client.follow(secureUrl.href);
   const http = plainUrl ? await client.follow(plainUrl.href) : [];
 
@@ -62,14 +65,19 @@ export async function scanTarget(input, options = {}) {
 
   const ctx = { add, client, target, https, http, main: reachable ? main : null, html, origin: reachable ? new URL(main.url).origin : null };
 
+  step('transport');
   await transportChecks(ctx);
   if (reachable) {
+    step('headers');
     await headerChecks(ctx);
     cookieChecks(ctx);
+    step('content');
     contentChecks(ctx);
     disclosureChecks(ctx);
+    step('exposure');
     await exposureChecks(ctx, { probe: options.probe !== false });
   }
+  step('done');
 
   const order = (a, b) => severityRank(b.severity) - severityRank(a.severity) || CATEGORIES.indexOf(a.category) - CATEGORIES.indexOf(b.category);
   findings.sort(order);

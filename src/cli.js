@@ -8,6 +8,7 @@ import { normalizeTarget } from './net.js';
 import { printBanner, printResults, toJson } from './report.js';
 import { pkg, scanAll } from './scan.js';
 import { c } from './ui.js';
+import { App } from './interactive.js';
 
 const GRADES = ['A+', 'A', 'B', 'C', 'D', 'F'];
 
@@ -27,6 +28,12 @@ export async function run(argv) {
     return 0;
   }
   const wantsHelp = flags.help || flags.h || positional[0] === 'help';
+  const interactive = flags.interactive || flags.i || (positional.length === 0 && !wantsHelp && process.stdin.isTTY && process.stdout.isTTY && !Object.keys(flags).some((key) => !['lang', 'no-color'].includes(key)));
+  if (interactive) {
+    const extraCa = process.env.VIGIE_EXTRA_CA ? readFileSync(process.env.VIGIE_EXTRA_CA, 'utf8') : undefined;
+    const port = process.env.VIGIE_HTTP_PORT ? Number(process.env.VIGIE_HTTP_PORT) : undefined;
+    return new App({ lang, ca: extraCa, httpPort: port, reportDir: process.env.VIGIE_REPORT_DIR }).run();
+  }
   const optionsOnly = Object.keys(flags).some((key) => !['lang', 'no-banner', 'no-color'].includes(key));
   if (!wantsHelp && positional.length === 0 && optionsOnly) throw new FxError(e.noTarget, e.noTargetHint);
   if (wantsHelp || positional.length === 0) {

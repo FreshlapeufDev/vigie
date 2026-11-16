@@ -5,7 +5,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { LANGS } from '../src/i18n/index.js';
+import { LANGS, plainText } from '../src/i18n/index.js';
 import { RULES } from '../src/catalog.js';
 import { hardenedSite, hasOpenssl, makeCert, vulnerableSite } from './servers.js';
 
@@ -108,4 +108,48 @@ test('usage errors', async () => {
   assert.equal((await cli(['example.com', '--lang', 'de'])).code, 2);
   assert.equal((await cli(['example.com', '--timeout', 'abc'])).code, 2);
   assert.match((await cli(['--json'])).out, /Missing website address/);
+});
+
+const app = (input, env = {}) => new Promise((resolve) => {
+  const child = execFile(process.execPath, [BIN, '--interactive'], { env: { ...process.env, NO_COLOR: '1', VIGIE_LANG: 'en', VIGIE_NO_OPEN: '1', VIGIE_EXTRA_CA: join(dir, 'ca.pem'), VIGIE_REPORT_DIR: join(dir, 'reports'), ...env } }, (error, stdout, stderr) => {
+    resolve({ code: error ? error.code : 0, out: stdout + stderr });
+  });
+  child.stdin.end(input);
+});
+
+test('every rule has a plain-language explanation', () => {
+  for (const code of Object.keys(LANGS)) {
+    for (const id of Object.keys(RULES)) {
+      const plain = plainText(code, id);
+      assert.ok(plain?.what && plain?.risk, `${code} ${id}`);
+    }
+  }
+});
+
+test('interactive app: scan, detail, report and quit', { skip }, async () => {
+  const url = `https://localhost:${vulnerable.httpsPort}/`;
+  const run = await app(`${url}\ny\n1\n\nr\nq\n`, { VIGIE_HTTP_PORT: String(vulnerable.httpPort) });
+  assert.equal(run.code, 0);
+  assert.match(run.out, /crafted by FreshDev/);
+  assert.match(run.out, /Rating F/);
+  assert.match(run.out, /In plain words/);
+  assert.match(run.out, /How to fix it/);
+  assert.match(run.out, /Your site's entire source code can be downloaded by anyone/);
+  assert.match(run.out, /Report saved: /);
+  assert.match(run.out, /See you soon!/);
+  const saved = run.out.match(/Report saved: (\S+\.html)/)[1];
+  assert.match(readFileSync(saved, 'utf8'), /^<!doctype html>/i);
+});
+
+test('interactive app: not my site skips the exposed-file checks', { skip }, async () => {
+  const url = `https://localhost:${vulnerable.httpsPort}/`;
+  const run = await app(`${url}\nn\nq\n`, { VIGIE_HTTP_PORT: String(vulnerable.httpPort) });
+  assert.equal(run.code, 0);
+  assert.doesNotMatch(run.out, /Git repository downloadable|\.git\/HEAD/);
+});
+
+test('interactive app in French, with an invalid address first', async () => {
+  const run = await app('pas une adresse\n\n', { VIGIE_LANG: 'fr' });
+  assert.equal(run.code, 0);
+  assert.match(run.out, /À bientôt !/);
 });

@@ -23,6 +23,22 @@ La plupart des sites ne se font pas pirater par des attaques sophistiquées. Ils
 
 Des robots cherchent ces erreurs sur tout Internet, chaque jour. vigie les trouve avant eux, explique chacune simplement et donne la ligne exacte de configuration nginx ou Apache qui la corrige.
 
+## Application Windows, sans rien installer
+
+Pas besoin de Node.js ni de ligne de commande : téléchargez **[vigie.exe](https://github.com/FreshlapeufDev/vigie/releases/latest/download/vigie.exe)** et double-cliquez dessus.
+
+1. vigie demande l'adresse du site à vérifier.
+2. Il demande si le site vous appartient. Si oui, il cherche aussi les fichiers sensibles oubliés en ligne ; sinon, il lit seulement la page d'accueil.
+3. Il affiche une note de A+ à F et la liste des problèmes, du plus urgent au moins grave, chacun expliqué en une phrase simple.
+4. Tapez le numéro d'un problème pour voir **en clair** ce qu'il signifie, le risque concret, ce qui a été vu et comment le corriger.
+5. Tapez `R` pour ouvrir le rapport complet dans votre navigateur. Il est enregistré dans `Documents\vigie`.
+
+<img src="https://raw.githubusercontent.com/FreshlapeufDev/vigie/main/docs/app-results.png" alt="Résultats dans l'application vigie" width="760">
+
+<img src="https://raw.githubusercontent.com/FreshlapeufDev/vigie/main/docs/app-detail.png" alt="Détail d'un problème dans l'application vigie" width="760">
+
+> Au premier lancement, Windows peut afficher « Windows a protégé votre ordinateur ». C'est normal pour un programme qui n'est pas signé par un certificat payant : cliquez sur **Informations complémentaires**, puis **Exécuter quand même**. Le code source complet est ici, et le fichier est construit automatiquement par GitHub à partir de ce code.
+
 ## Installation
 
 Il faut [Node.js](https://nodejs.org) 18 ou plus récent (prends la version **LTS**).
@@ -43,6 +59,7 @@ npx vigie-cli exemple.fr
 vigie exemple.fr
 vigie https://boutique.exemple.fr --html audit.html
 vigie exemple.fr blog.exemple.fr --lang fr
+vigie                       # assistant pas à pas, comme vigie.exe
 ```
 
 | Option | |
@@ -55,6 +72,7 @@ vigie exemple.fr blog.exemple.fr --lang fr
 | `--timeout <secondes>` | délai par requête (`10` par défaut) |
 | `-q, --quiet` | résumé uniquement |
 | `--no-banner` | masquer le logo FreshDev |
+| `-i, --interactive` | assistant pas à pas |
 
 ## Ce qui est vérifié
 
@@ -149,11 +167,22 @@ src/
 ├─ checks/         transport, en-têtes et cookies, fichiers exposés, contenu de la page
 ├─ catalog.js      contrôles, sévérités, CWE, notation, exemples nginx/Apache
 ├─ i18n/           anglais et français
+├─ interactive.js  assistant pas à pas (vigie.exe)
 ├─ report.js       sortie console et JSON
 └─ html.js         rapport d'audit
 ```
 
 Aucune dépendance à l'exécution.
+
+Pour construire `vigie.exe` vous-même (Node.js 22 ou plus récent, sous Windows) :
+
+```bash
+npm install
+npm run build:exe
+```
+
+Le fichier arrive dans `dist/`. À chaque version publiée (`git push --follow-tags`), GitHub le construit et l'ajoute aux [Releases](https://github.com/FreshlapeufDev/vigie/releases).
+
 
 ## Voir aussi
 

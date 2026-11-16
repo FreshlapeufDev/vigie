@@ -23,6 +23,22 @@ Most websites are not hacked through clever exploits. They are hacked because a 
 
 Bots scan the whole Internet for these mistakes every day. vigie finds them first, explains each one in plain language and gives you the exact line of nginx or Apache configuration that fixes it.
 
+## Windows app, nothing to install
+
+No Node.js, no command line: download **[vigie.exe](https://github.com/FreshlapeufDev/vigie/releases/latest/download/vigie.exe)** and double-click it.
+
+1. vigie asks for the address of the website to check.
+2. It asks whether you own the site. If you do, it also looks for sensitive files left online; if not, it only reads the home page.
+3. It shows a grade from A+ to F and the list of problems, most urgent first, each explained in one plain sentence.
+4. Type a problem's number to see **in plain words** what it means, the real risk, what was seen and how to fix it.
+5. Type `R` to open the full report in your browser. It is saved in `Documents\vigie`.
+
+<img src="https://raw.githubusercontent.com/FreshlapeufDev/vigie/main/docs/app-results.png" alt="Results in the vigie app" width="760">
+
+<img src="https://raw.githubusercontent.com/FreshlapeufDev/vigie/main/docs/app-detail.png" alt="Problem detail in the vigie app" width="760">
+
+> On first launch, Windows may show "Windows protected your PC". This is normal for a program that is not signed with a paid certificate: click **More info**, then **Run anyway**. The full source code is here, and the file is built automatically by GitHub from that code.
+
 ## Install
 
 You need [Node.js](https://nodejs.org) 18 or newer (pick the **LTS** version).
@@ -43,6 +59,7 @@ npx vigie-cli example.com
 vigie example.com
 vigie https://shop.example.com --html audit.html
 vigie example.com blog.example.com --lang fr
+vigie                       # step-by-step assistant, like vigie.exe
 ```
 
 | Option | |
@@ -55,6 +72,7 @@ vigie example.com blog.example.com --lang fr
 | `--timeout <seconds>` | per request (default `10`) |
 | `-q, --quiet` | summary only |
 | `--no-banner` | hide the FreshDev logo |
+| `-i, --interactive` | step-by-step assistant |
 
 ## What it checks
 
@@ -149,11 +167,22 @@ src/
 ├─ checks/         transport, headers & cookies, exposed files, page content
 ├─ catalog.js      checks, severities, CWE, scoring, nginx/Apache examples
 ├─ i18n/           English and French
+├─ interactive.js  step-by-step assistant (vigie.exe)
 ├─ report.js       console and JSON output
 └─ html.js         audit report
 ```
 
 No runtime dependency.
+
+To build `vigie.exe` yourself (Node.js 22 or newer, on Windows):
+
+```bash
+npm install
+npm run build:exe
+```
+
+The file lands in `dist/`. For every published version (`git push --follow-tags`), GitHub builds it and attaches it to the [Releases](https://github.com/FreshlapeufDev/vigie/releases).
+
 
 ## Related
 

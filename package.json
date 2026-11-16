@@ -15,7 +15,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/unit.test.js test/scan.test.js test/cli.test.js"
+    "test": "node --test test/unit.test.js test/scan.test.js test/cli.test.js",
+    "version": "node scripts/sync-version.mjs && git add src/version.js",
+    "build:exe": "node scripts/build-exe.mjs"
   },
   "engines": {
     "node": ">=18"
@@ -41,5 +43,10 @@
   "homepage": "https://github.com/FreshlapeufDev/vigie#readme",
   "bugs": {
     "url": "https://github.com/FreshlapeufDev/vigie/issues"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "postject": "1.0.0-alpha.6",
+    "rcedit": "5.0.2"
   }
 }

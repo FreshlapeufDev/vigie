@@ -21,6 +21,7 @@ const CSP_REASONS = {
 export default {
   code: 'en',
   severities: { critical: 'critical', high: 'high', medium: 'medium', low: 'low', info: 'info' },
+  severityCounts: (n, severity) => `${n} ${severity}`,
   severityTitles: { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low', info: 'Informational' },
   categories: {
     transport: 'HTTPS & certificate',
@@ -318,7 +319,52 @@ export default {
     filter: 'Show',
     scoreOf: (n) => `${n}/100`,
   },
+  app: {
+    intro: 'Check in seconds whether a website is properly protected.',
+    askUrl: 'Website to check',
+    askUrlHint: 'example: mysite.com   ·   press Enter on an empty line to quit   ·   L = Français',
+    invalidUrl: (value) => `"${value}" is not a valid website address.`,
+    askOwner: 'Do you own this website, or are you allowed to test it?',
+    yesNo: '[y/N]',
+    yes: ['y', 'yes', 'o', 'oui'],
+    ownerHint: [
+      'Yes: vigie also looks for sensitive files left online (.env, backups, .git…).',
+      'No: vigie only reads the home page, like a browser.',
+    ],
+    scanning: (url) => `Checking ${url}`,
+    steps: {
+      connect: 'Connecting to the site',
+      transport: 'Padlock and certificate',
+      headers: 'Security headers and cookies',
+      content: 'Page content',
+      exposure: 'Sensitive files left online',
+    },
+    skipped: 'not checked',
+    unreachableTitle: 'The website does not answer',
+    unreachable: (url, error) => `Could not reach ${url} (${error}). Check the address and your Internet connection.`,
+    grade: 'Rating',
+    groups: { urgent: 'Fix first', improve: 'To improve', info: 'For your information' },
+    noFindings: 'No problem found. Well done!',
+    menu: {
+      detail: (n) => (n > 1 ? `1 to ${n}  see a problem in detail` : '1  see the problem in detail'),
+      report: 'R  open the full report',
+      again: 'N  check another website',
+      quit: 'Q  quit',
+    },
+    keys: { report: 'r', again: 'n', quit: 'q', lang: 'l' },
+    choice: 'Your choice',
+    labels: { what: 'In plain words', risk: 'The risk', seen: 'What we saw', fix: 'How to fix it' },
+    share: 'Send this, or the full report, to whoever manages your website.',
+    back: 'Enter to go back to the list',
+    reportSaved: (path) => `Report saved: ${path}`,
+    reportOpened: 'It opens in your browser.',
+    reportFailed: (error) => `Could not save the report (${error}).`,
+    skippedNote: 'Sensitive files not checked: you said the website is not yours.',
+    bye: 'See you soon!',
+    pressEnter: 'Enter to continue',
+  },
   help: (c) => `  ${c.bold('Usage')}
+    vigie                           interactive mode (also when you double-click vigie.exe)
     vigie ${c.gray('<url> [url…]')}             check one or more websites
 
   ${c.bold('Options')}

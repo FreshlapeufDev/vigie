@@ -2,6 +2,16 @@
 
 All notable changes to vigie are listed here. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.1.0
+
+### Added
+- `vigie.exe`: a standalone Windows app, attached to every GitHub release. Double-click it, type an address, read the results. No Node.js needed.
+- Step-by-step assistant, started by `vigie` with no argument or by `--interactive`: live progress, big grade, problems grouped by urgency, a plain-language explanation and the concrete risk for every check, and the full report saved to `Documents/vigie` and opened in the browser.
+- Plain-language explanations of all 34 checks in English and French.
+
+### Changed
+- The version number is now built into the code, so the bundled app does not need to read `package.json`.
+
 ## 1.0.0
 
 ### Added

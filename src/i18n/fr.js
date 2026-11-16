@@ -22,6 +22,7 @@ const CSP_REASONS = {
 export default {
   code: 'fr',
   severities: { critical: 'critique', high: 'élevée', medium: 'moyenne', low: 'faible', info: 'info' },
+  severityCounts: (n, severity) => `${n} ${{ critical: n > 1 ? 'critiques' : 'critique', high: n > 1 ? 'élevées' : 'élevée', medium: n > 1 ? 'moyennes' : 'moyenne', low: n > 1 ? 'faibles' : 'faible', info: 'info' }[severity]}`,
   severityTitles: { critical: 'Critique', high: 'Élevée', medium: 'Moyenne', low: 'Faible', info: 'Information' },
   categories: {
     transport: 'HTTPS et certificat',
@@ -319,7 +320,52 @@ export default {
     filter: 'Afficher',
     scoreOf: (n) => `${n}/100`,
   },
+  app: {
+    intro: 'Vérifiez en quelques secondes si un site web est bien protégé.',
+    askUrl: 'Adresse du site à vérifier',
+    askUrlHint: 'exemple : monsite.fr   ·   Entrée sans rien pour quitter   ·   L = English',
+    invalidUrl: (value) => `« ${value} » n'est pas une adresse de site valide.`,
+    askOwner: "Ce site vous appartient-il, ou avez-vous l'autorisation de le tester ?",
+    yesNo: '[o/N]',
+    yes: ['o', 'oui', 'y', 'yes'],
+    ownerHint: [
+      'Oui : vigie cherche aussi les fichiers sensibles oubliés en ligne (.env, sauvegardes, .git…).',
+      "Non : vigie lit seulement la page d'accueil, comme un navigateur.",
+    ],
+    scanning: (url) => `Analyse de ${url}`,
+    steps: {
+      connect: 'Connexion au site',
+      transport: 'Cadenas et certificat',
+      headers: 'En-têtes de sécurité et cookies',
+      content: 'Contenu de la page',
+      exposure: 'Fichiers sensibles oubliés en ligne',
+    },
+    skipped: 'non vérifié',
+    unreachableTitle: 'Le site ne répond pas',
+    unreachable: (url, error) => `Impossible de joindre ${url} (${error}). Vérifiez l'adresse et votre connexion Internet.`,
+    grade: 'Note',
+    groups: { urgent: 'À corriger en priorité', improve: 'À améliorer', info: 'Pour information' },
+    noFindings: 'Aucun problème trouvé. Bravo !',
+    menu: {
+      detail: (n) => (n > 1 ? `1 à ${n}  voir un problème en détail` : '1  voir le problème en détail'),
+      report: 'R  ouvrir le rapport complet',
+      again: 'N  vérifier un autre site',
+      quit: 'Q  quitter',
+    },
+    keys: { report: 'r', again: 'n', quit: 'q', lang: 'l' },
+    choice: 'Votre choix',
+    labels: { what: 'En clair', risk: 'Le risque', seen: "Ce qu'on a vu", fix: 'Comment corriger' },
+    share: 'Envoyez ce détail, ou le rapport complet, à la personne qui gère votre site.',
+    back: 'Entrée pour revenir à la liste',
+    reportSaved: (path) => `Rapport enregistré : ${path}`,
+    reportOpened: "Il s'ouvre dans votre navigateur.",
+    reportFailed: (error) => `Impossible d'enregistrer le rapport (${error}).`,
+    skippedNote: "Fichiers sensibles non vérifiés : vous avez indiqué que le site ne vous appartient pas.",
+    bye: 'À bientôt !',
+    pressEnter: 'Entrée pour continuer',
+  },
   help: (c) => `  ${c.bold('Utilisation')}
+    vigie                           mode interactif (aussi en double-cliquant sur vigie.exe)
     vigie ${c.gray('<url> [url…]')}             vérifier un ou plusieurs sites
 
   ${c.bold('Options')}

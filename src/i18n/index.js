@@ -1,5 +1,6 @@
 import en from './en.js';
 import fr from './fr.js';
+import { PLAIN } from './plain.js';
 
 export const LANGS = { en, fr };
 export const LANG_CODES = Object.keys(LANGS);
@@ -27,3 +28,5 @@ export const message = (lang, finding) => {
   const fn = dict(lang).messages[finding.rule] ?? en.messages[finding.rule];
   return fn ? fn(finding.params) : finding.rule;
 };
+
+export const plainText = (lang, rule) => PLAIN[lang]?.[rule] ?? PLAIN.en[rule];
