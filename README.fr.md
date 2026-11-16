@@ -4,10 +4,10 @@
 
 **Vérifie la sécurité de n'importe quel site web en quelques secondes, avec un rapport que ton client peut lire.**
 
-[![npm](https://img.shields.io/npm/v/vigie?color=0d6b5d&label=npm)](https://www.npmjs.com/package/vigie)
+[![npm](https://img.shields.io/npm/v/vigie-cli?color=0d6b5d&label=npm)](https://www.npmjs.com/package/vigie-cli)
 [![CI](https://github.com/FreshlapeufDev/vigie/actions/workflows/ci.yml/badge.svg)](https://github.com/FreshlapeufDev/vigie/actions/workflows/ci.yml)
-[![node](https://img.shields.io/node/v/vigie?color=339933)](https://nodejs.org)
-[![licence](https://img.shields.io/npm/l/vigie?color=blue&label=licence)](https://github.com/FreshlapeufDev/vigie/blob/main/LICENSE)
+[![node](https://img.shields.io/node/v/vigie-cli?color=339933)](https://nodejs.org)
+[![licence](https://img.shields.io/npm/l/vigie-cli?color=blue&label=licence)](https://github.com/FreshlapeufDev/vigie/blob/main/LICENSE)
 
 HTTPS · certificats · en-têtes de sécurité · cookies · fichiers exposés · bibliothèques vulnérables
 
@@ -28,13 +28,13 @@ Des robots cherchent ces erreurs sur tout Internet, chaque jour. vigie les trouv
 Il faut [Node.js](https://nodejs.org) 18 ou plus récent (prends la version **LTS**).
 
 ```bash
-npm install -g vigie
+npm install -g vigie-cli
 ```
 
 ou lance-le une seule fois sans rien installer :
 
 ```bash
-npx vigie exemple.fr
+npx vigie-cli exemple.fr
 ```
 
 ## Utilisation
@@ -123,7 +123,7 @@ Les secrets trouvés dans les fichiers exposés ne sont **jamais affichés** : s
 ## En intégration continue
 
 ```yaml
-- run: npx vigie https://preprod.exemple.fr --fail-under B
+- run: npx vigie-cli https://preprod.exemple.fr --fail-under B
 ```
 
 Le job échoue si la note passe sous B, par exemple après la suppression d'un en-tête de sécurité.

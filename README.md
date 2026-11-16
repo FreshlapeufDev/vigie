@@ -4,10 +4,10 @@
 
 **Check the security of any website in seconds, and get a report your client can read.**
 
-[![npm](https://img.shields.io/npm/v/vigie?color=0d6b5d&label=npm)](https://www.npmjs.com/package/vigie)
+[![npm](https://img.shields.io/npm/v/vigie-cli?color=0d6b5d&label=npm)](https://www.npmjs.com/package/vigie-cli)
 [![CI](https://github.com/FreshlapeufDev/vigie/actions/workflows/ci.yml/badge.svg)](https://github.com/FreshlapeufDev/vigie/actions/workflows/ci.yml)
-[![node](https://img.shields.io/node/v/vigie?color=339933)](https://nodejs.org)
-[![license](https://img.shields.io/npm/l/vigie?color=blue)](https://github.com/FreshlapeufDev/vigie/blob/main/LICENSE)
+[![node](https://img.shields.io/node/v/vigie-cli?color=339933)](https://nodejs.org)
+[![license](https://img.shields.io/npm/l/vigie-cli?color=blue)](https://github.com/FreshlapeufDev/vigie/blob/main/LICENSE)
 
 HTTPS · certificates · security headers · cookies · exposed files · vulnerable libraries
 
@@ -28,13 +28,13 @@ Bots scan the whole Internet for these mistakes every day. vigie finds them firs
 You need [Node.js](https://nodejs.org) 18 or newer (pick the **LTS** version).
 
 ```bash
-npm install -g vigie
+npm install -g vigie-cli
 ```
 
 or run it once without installing:
 
 ```bash
-npx vigie example.com
+npx vigie-cli example.com
 ```
 
 ## Usage
@@ -123,7 +123,7 @@ Secrets found in exposed files are **never displayed**: only the variable names 
 ## Use it in CI
 
 ```yaml
-- run: npx vigie https://staging.example.com --fail-under B
+- run: npx vigie-cli https://staging.example.com --fail-under B
 ```
 
 The job fails if the grade drops below B, for example after someone removes a security header.
